@@ -1,0 +1,156 @@
+\documentclass[a4paper,11pt]{article}
+
+
+\title{MA3H0 Assignment 3}
+\author{Joshua Rydell}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{cite}
+\usepackage{mathrsfs}
+\usepackage{array}
+\usepackage[numbers]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{cite}
+\usepackage{xcolor}
+
+
+\usepackage{amsthm} %  package used to make the theorem environments work.
+% code below sets up new theorem environments
+\theoremstyle{plain} % this sets the style for all new environments created using \newtheorem to have the "theorem" style, which as a bold title, italic text and vertical space above and below it. 
+\newtheorem{thm}{Theorem}[section] 
+\newtheorem{lem}[thm]{Lemma} 
+\newtheorem{prop}[thm]{Proposition} 
+\newtheorem*{cor}{Corollary} 
+\newtheorem*{claim}{Claim} 
+
+\theoremstyle{definition} % this sets the style for all new environments created using \newtheorem to have the "definition" style, which as a bold title, upright text and vertical space above and below it.
+\newtheorem{defn}{Definition}[section]
+\newtheorem{eg}{Example}[section]
+
+
+\theoremstyle{remark} % this sets the style for all new environments created using \newtheorem to have the "remark" style, which as an italic non-bold title, upright text and no extra vertical space above and below it.
+\newtheorem*{rem}{Remark} 
+\newtheorem{case}{Case}
+
+% note that there is already an in-built "proof" environment which we do not need to create
+
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\brac}[1]{\left ( #1  \right )}
+\newcommand{\abs}[1]{\left | #1  \right | }
+\newcommand{\qu}{\underline q}
+\newcommand{\qo}{\bar{q}}
+\newcommand{\du}{\underline d}
+\newcommand{\ip}[2]{\left \langle #1 , #2 \right \rangle}
+\newcommand{\dob}{\bar{d}}
+\newcommand{\restr}[2]{\left.#1\right|_{#2}}
+
+\begin{document}  
+\maketitle
+We consider the problem:
+\begin{equation} \label{problem}
+\begin{cases}
+-\partial_x(d(x) \partial_x \tilde u(x)) + q(x) \tilde u(x) = f(x) & \text{ in } \Omega = (0,1), \\
+\partial_x \tilde u(0) = \partial_x \tilde u(1) = 0,
+\end{cases}
+\end{equation}
+with $f \in L^2
+(\Omega), d, q \in C^0 (\Omega)$. Assume that there exist positive constants $ \dob, \du, \qu, \qo$
+such that
+\[ 0 < \du \leq d(x) \leq \dob, \; \; \; 0 < \qu \leq q(x) \leq \qo  \; \; \; \forall x \in \overline \Omega. \]
+\begin{enumerate}
+\item To convert (\ref{problem}) to a variational problem we use integration by parts, let $\varphi \in H^1(\Omega)$. We then calculate:
+\[\int_0^1 f(x) \varphi(x) dx = \int_0^1 -\partial_x(d(x) \partial_x \tilde u(x)) \varphi(x) + q(x) \tilde u(x) \varphi(x) dx  \] 
+\[=\int^1_0d(x)   \partial_x \tilde u(x)\partial_x \varphi(x)  + 
+q(x) \tilde u(x) \varphi(x)dx - \left [d(x)\varphi(x)  \partial_x \tilde u(x) \right]^1_0\]
+Note that $ \left [\varphi(x) d(x) \partial_x \tilde u(x) \right]^1_0 = 0$ due to zero Neumann boundary conditions. Therefore we have shown that (\ref{problem}) can be formulated as:
+\[ \int^1_0  d(x)  \partial_x \tilde u(x)\partial_x \varphi(x) + q(x) \tilde u(x) \varphi(x)dx =  \int_0^1 f(x) \varphi(x) dx,\]
+for all  $\varphi \in H^1(\Omega)$.
+
+\item We define the bilinear form $a : H^1(\Omega) \times H^1(\Omega) \to \mathbb R$ and a linear form $\ell : H^1(\Omega) \to \mathbb R$ via :
+\[a(u,v) = \int^1_0 d(x)\partial_x v(x)   \partial_x u(x) + q(x)  u(x) v(x)dx , \]
+\[\ell(v) = \int_0^1 f(x) v(x) dx .\]
+
+We first show that $a$ is bounded. We calculate via the triangle inequality:
+\[ |a(u,v)| = \abs{\int^1_0 d(x)\partial_x v(x)   \partial_x u(x) + q(x)  u(x) v(x)dx} \]
+\[\leq \max \{\dob, \qo\} \abs{\int^1_0 \partial_x v(x)   \partial_x u(x) + u(x) v(x)dx} \] 
+\[=\max \{\dob, \qo\} \abs{\ip{u}{v}_{H^1(\Omega)}} \leq \max \{\dob, \qo\} \|u\|_{H^1(\Omega)}\|v\|_{H^1(\Omega)}. \]
+where to get the final line we applied Cauchy Schwartz.
+Therefore $a$ is bounded.
+
+Similarly, to show $a$ is coercive :
+\[a(v,v) = \int^1_0 d(x)(\partial_x v(x))^2+ q(x)(v(x))^2dx \] 
+\[\geq  \min \{\qu, \du \} \int^1_0(\partial_x v(x))^2+(v(x))^2dx  = \min \{\qu, \du \}\|v\|_{H^1(\Omega)}^2.\] 
+Thus $a$ is also coercive.
+
+Finally we show that $\ell$ is bounded in the $H^1$ norm:
+\[\abs{\ell(v)} = \abs{\int_0^1 f(x) v(x) dx} = \abs{\ip{f}{v}_{L^2(\Omega)}} \] 
+\[\leq  \|f\|_{L^2(\Omega)}\|v\|_{L^2(\Omega)} \leq \|f\|_{L^2(\Omega)}\|v\|_{H^1(\Omega)},\]
+where again we used Cauchy-Schwartz in the last line.
+\item We recall the definition of the test functions $\psi_j, \; j \in \{0,\dotsc, N_h\}$: We define $h = 1/N_h$, set $x_j = jh$. Then 
+\[\psi_j(x) = 
+\begin{cases} 
+(x-x_{j-1})/h & x\in [x_{j-1}, x_j], \\
+(x_{j+1}-x)/h & x \in [x_j, x_{j+1}], \\
+0 & \text{ otherwise.} 
+\end{cases} \] 
+
+We then calculate for $j \in \{1,\dotsc, N_h-1 \}$ that
+\[a(\psi_j,\psi_j) = \int_0^1d(x)(\partial \psi_j(x))^2 + q(x)(\psi_j(x))^2dx \] 
+\[= \frac{1}{h^2} \int_{x_{j-1}}^{x_j} d(x) + q(x)(x-x_{j-1})^2dx + \frac{1}{h^2}\int_{x_{j}}^{x_{j+1}} d(x) + q(x)(x_{j+1}-x)^2dx.\]
+Furthermore, we calculate
+\[a(\psi_0,\psi_0) =  \frac{1}{h^2}\int_{0}^{h} d(x) + q(x)(h-x)^2dx, \]
+\[a(\psi_{N_h},\psi_{N_h}) =\frac{1}{h^2} \int_{1-h}^1 d(x) + q(x)(x-1+h)^2dx . \]
+
+We again calculate that for  $j \in \{1,\dotsc, N_h \}$
+\[a(\psi_{j-1}, \psi_j) = a(\psi_j,\psi_{j-1}) = \frac{1}{h^2}\int_{x_{j-1}}^{x_j} -d(x) + q(x)(x_j-x)(x-x_{j-1})dx. \]
+
+We also have that for $ i \neq j-1, j , j+1$:
+\[ a(\psi_i,\psi_j) = 0. \]
+
+We also note:
+\[\ell(\psi_j) = \frac 1 h \int_{x_{j-1}}^{x_j} f(x)(x-x_{j-1})dx +\frac 1 h \int_{x_{j}}^{x_{j+1}} f(x)(x_{j+1}-x)dx. \]
+We set 
+\[A =\begin{pmatrix}
+a(\psi_0,\psi_0) & \hdots  & a(\psi_0,\psi_{N_h}) \\
+\vdots & \ddots & \vdots \\
+a(\psi_{N_h},\psi_0) & \hdots  & a(\psi_{N_h},\psi_{N_h}) 
+\end{pmatrix}, \; 
+B = \begin{pmatrix}
+\ell(\psi_0) \\
+\vdots \\
+\ell(\psi_{N_h})\\
+\end{pmatrix}
+\] 
+\[U = 
+\begin{pmatrix}
+u_{0}\\
+\vdots \\
+u_{N_h} \\
+\end{pmatrix} \]
+Then the discrete problem can be solved by solving the tridiagonal matrix system :
+\[AU = B \]
+\item By applying Cea (lemma 4.13) in the notes, we calculate 
+\[ \| \tilde u - u_h \|_{H^1(\Omega)} \leq \frac{\max \{\dob, \qo\} }{\min \{\qu, \du \}} \| \tilde u - P_h(\tilde u)  \|_{H^1(\Omega)}, \]
+where $P_h(\tilde u) = \sum^{N_h}_{j=0} \tilde u (x_j)\psi_j \in V_h$.
+We then apply the interpolation estimate (lemma 4.17) to get that there is some $\tilde C$ such that:
+\[\frac{\max \{\dob, \qo\} }{\min \{\qu, \du \}} \| \tilde u - P_h(\tilde u)  \|_{H^1(\Omega)}  \leq \tilde C h \frac{\max \{\dob, \qo\} }{\min \{\qu, \du \}} \| \tilde u  \|_{H^2(\Omega)}.  \]
+The result follows from taking $C = \tilde C  \frac{\max \{\dob, \qo\} }{\min \{\qu, \du \}}$.
+\item By plugging in the integrals from the solution to question three into Wolfram Alpha, we calculate that for the given $q(x),d(x),f(x)$:
+\[a(\psi_0,\psi_0) =  \frac{7h}{20},\]
+\[a(\psi_{N_h},\psi_{N_h}) = \frac{h}{20}(N_h^2-N_h+7),\]
+\[a(\psi_j,\psi_j) = \frac{hj^2+7h}{10}, \; \; \; j \in \{1, \dotsc, N_h-1\},  \]
+\[a(\psi_j,\psi_{j-1}) = a(\psi_{j-1},\psi_{j}) =  \frac{h}{20}(-j^2+j+3).\]
+
+For the vector $B$, we calculate that :
+\[\ell(\psi_0) =  \frac{24h^4-35h^3}{600}, \]
+\[\ell(\psi_{N_h}) =  \frac{h^4}{25}(10N_h^3 - 10 N_h^2+5N_h -1) - \frac{7h^3}{120}(6N_h^2-4N_h+1)),\]
+\[\ell(\psi_j) =  \frac{2h^4}{5}(2j^3+j)-\frac{7h^3}{60}(6j^2+1)  \; \; \; j \in \{1, \dotsc, N_h-1\}.\]
+
+In the jupyter notebook we calculate the EOC for the $\| \cdot \|_\infty$ norm and see that it is $\approx 2$.
+\end{enumerate}
+\end{document}
